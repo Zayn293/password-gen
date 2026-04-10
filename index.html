@@ -1,85 +1,51 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SafeGen — Надежные пароли</title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
 
-    <div class="container">
+<button id="theme-toggle" class="theme-btn">🌙</button>
 
-         # SafeGen # 
+<div class="container">
+    <h1 class="fade-in">SafeGen</h1>
+    <p class="subtitle fade-in">Генератор и сканер надежности</p>
 
-        <p class="subtitle">Генератор и сканер надежности
+    <div class="main-card fade-up">
+        <div class="input-group">
+            <input type="text" id="password-input" placeholder="Введите или создайте пароль">
+            <button id="copy-btn" title="Копировать">📋</button>
+        </div>
 
-        <div class="main-card">
+        <div class="strength-meter">
+            <div id="strength-bar" class="bar"></div>
+        </div>
 
-            <!-- Поле вывода/ввода пароля -->
+        <p id="strength-text">Введите пароль...</p>
+        <p id="crack-time" class="crack-time"></p>
 
-            <div class="input-group">
+        <hr>
 
-                <input type="text" id="password-input" placeholder="Введите или создайте пароль">
+        <div class="settings">
+            <div class="setting-item">
+                <span>Длина: <b id="length-val">12</b></span>
+                <input type="range" id="length-slider" min="6" max="32" value="12">
+            </div>
 
-                <button id="copy-btn" title="Копировать">📋</button>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="use-upper" checked> A-Z</label>
+                <label><input type="checkbox" id="use-numbers" checked> 0-9</label>
+                <label><input type="checkbox" id="use-symbols" checked> #$!</label>
+            </div>
+        </div>
 
-            
+        <button id="generate-btn" class="primary-btn">Сгенерировать пароль</button>
+    </div>
+</div>
 
-            <!-- Индикатор надежности -->
-
-            <div class="strength-meter">
-
-                <div id="strength-bar" class="bar">
-
-            
-
-            <p id="strength-text">Введите пароль...
-
-            
-
-            <!-- Настройки генерации -->
-
-            <div class="settings">
-
-                <div class="setting-item">
-
-                    <span>Длина: <b id="length-val">12**</span>
-
-                    <input type="range" id="length-slider" min="6" max="32" value="12">
-
-                
-
-                
-
-                <div class="checkbox-group">
-
-                    <label><input type="checkbox" id="use-upper" checked> А-Z</label>
-
-                    <label><input type="checkbox" id="use-numbers" checked> 0-9</label>
-
-                    <label><input type="checkbox" id="use-symbols" checked> #$!</label>
-
-                
-
-            
-
-            <button id="generate-btn" class="primary-btn">Сгенерировать пароль</button>
-
-        
-
-    
-
-    <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
-
 </html>
