@@ -1,5 +1,3 @@
-```
-
 const passwordInput = document.getElementById('password-input');
 
 const generateBtn = document.getElementById('generate-btn');
@@ -129,5 +127,3 @@ copyBtn.addEventListener('click', () => {
     alert('Пароль скопирован!');
 
 });
-
-```
