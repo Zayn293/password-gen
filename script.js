@@ -34,6 +34,17 @@ function generate() {
     updateStrength(password);
 }
 
+// перевод секунд в нормальный текст
+function formatTime(seconds) {
+    if (seconds < 1) return "мгновенно";
+    if (seconds < 60) return `${Math.round(seconds)} сек`;
+    if (seconds < 3600) return `${Math.round(seconds / 60)} мин`;
+    if (seconds < 86400) return `${Math.round(seconds / 3600)} ч`;
+    if (seconds < 31536000) return `${Math.round(seconds / 86400)} дней`;
+    if (seconds < 3153600000) return `${Math.round(seconds / 31536000)} лет`;
+    return "сотни лет";
+}
+
 // проверка
 function updateStrength(pwd) {
     if (!pwd) {
@@ -67,16 +78,22 @@ function updateStrength(pwd) {
     strengthText.innerText = state.text;
     strengthText.style.color = state.color;
 
-    // оценка взлома
-    if (pwd.length < 8) {
-        crackTimeText.innerText = "Взлом: очень быстро";
-    } else if (pwd.length < 12) {
-        crackTimeText.innerText = "Взлом: минуты/часы";
-    } else if (pwd.length < 16) {
-        crackTimeText.innerText = "Взлом: дни/годы";
-    } else {
-        crackTimeText.innerText = "Взлом: практически невозможно";
-    }
+    // РЕАЛЬНАЯ ОЦЕНКА ВРЕМЕНИ ВЗЛОМА
+
+    let charsetSize = 0;
+    if (/[a-z]/.test(pwd)) charsetSize += 26;
+    if (/[A-Z]/.test(pwd)) charsetSize += 26;
+    if (/[0-9]/.test(pwd)) charsetSize += 10;
+    if (/[^A-Za-z0-9]/.test(pwd)) charsetSize += 32;
+
+    const combinations = Math.pow(charsetSize, pwd.length);
+
+    // скорость перебора (примерно)
+    const guessesPerSecond = 1e9; // 1 миллиард/сек
+
+    const seconds = combinations / guessesPerSecond;
+
+    crackTimeText.innerText = "Взлом: " + formatTime(seconds);
 }
 
 // события
