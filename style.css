@@ -82,8 +82,14 @@ input[type="text"] {
 
 .crack-time {
     font-size: 0.8em;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     color: #888;
+}
+
+.entropy {
+    font-size: 0.8em;
+    color: #555;
+    margin-bottom: 5px;
 }
 
 /* адаптив */
