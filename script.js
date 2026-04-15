@@ -7,6 +7,7 @@ const crackTimeText = document.getElementById('crack-time');
 const entropyText = document.getElementById('entropy-text');
 const lengthSlider = document.getElementById('length-slider');
 const lengthVal = document.getElementById('length-val');
+const mainCard = document.querySelector('.main-card');
 
 let isManualInput = false;
 let inputHistory = "";
@@ -125,39 +126,49 @@ copyBtn.addEventListener('click', () => {
     }, 1000);
 });
 
-// пасхалки
+
+// ================= ПАСХАЛКИ =================
+
 function checkEasterEgg(pwd) {
     if (!isManualInput) return;
 
-    if (/^#[0-9A-Fa-f]{6}$/.test(pwd)) {
-        document.body.style.background = pwd;
-    }
+    const val = pwd.toLowerCase();
 
-    if (pwd.toLowerCase() === "matrix") {
+    // MATRIX (улучшенная)
+    if (val === "matrix") {
         triggerMatrix();
     }
 
-    if (pwd === "112358") {
-        alert("Фибоначчи обнаружен");
+    // "красный" — скример
+    if (val === "красный" || val === "red") {
+        flashColor("#ff0000");
     }
 
-    if (/^[01]{8,}$/.test(pwd)) {
-        alert("Двоичный режим активирован");
+    // "неон"
+    if (val === "neon") {
+        neonEffect();
     }
 
-    if (pwd.length > 4 && pwd === pwd.split('').reverse().join('')) {
-        alert("Палиндром!");
+    // "glitch"
+    if (val === "glitch") {
+        glitchEffect();
     }
 
-    if (inputHistory.includes("upupdowndown")) {
-        alert("Секретная комбинация активирована");
+    // секретная последовательность
+    if (inputHistory.includes("iddqd")) {
+        godMode();
         inputHistory = "";
     }
 }
 
+
+// ===== ЭФФЕКТЫ =====
+
+// Matrix
 function triggerMatrix() {
     document.body.style.background = "black";
     document.body.style.color = "#00ff00";
+    mainCard.style.background = "#001100";
 
     const text = document.createElement("div");
     text.innerText = "Wake up, Neo...";
@@ -173,5 +184,50 @@ function triggerMatrix() {
         text.remove();
         document.body.style.background = "";
         document.body.style.color = "";
+        mainCard.style.background = "";
     }, 3000);
+}
+
+// Резкая вспышка (скример)
+function flashColor(color) {
+    const original = document.body.style.background;
+
+    document.body.style.background = color;
+
+    setTimeout(() => {
+        document.body.style.background = original;
+    }, 150);
+}
+
+// Неоновый эффект
+function neonEffect() {
+    mainCard.style.boxShadow = "0 0 20px #0ff, 0 0 40px #0ff";
+
+    setTimeout(() => {
+        mainCard.style.boxShadow = "";
+    }, 2000);
+}
+
+// Глитч
+function glitchEffect() {
+    mainCard.style.transform = "translate(5px, -5px)";
+
+    setTimeout(() => {
+        mainCard.style.transform = "translate(-5px, 5px)";
+    }, 100);
+
+    setTimeout(() => {
+        mainCard.style.transform = "";
+    }, 300);
+}
+
+// GOD MODE (секрет)
+function godMode() {
+    mainCard.style.transform = "scale(1.1)";
+    mainCard.style.boxShadow = "0 0 30px gold";
+
+    setTimeout(() => {
+        mainCard.style.transform = "";
+        mainCard.style.boxShadow = "";
+    }, 2000);
 }
