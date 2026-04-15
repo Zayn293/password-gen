@@ -8,12 +8,17 @@ const entropyText = document.getElementById('entropy-text');
 const lengthSlider = document.getElementById('length-slider');
 const lengthVal = document.getElementById('length-val');
 
+let isManualInput = false;
+let inputHistory = "";
+
 lengthSlider.oninput = () => {
     lengthVal.innerText = lengthSlider.value;
 };
 
-// генерация пароля
 function generate() {
+    isManualInput = false;
+    inputHistory = "";
+
     const length = parseInt(lengthSlider.value);
 
     const lower = "abcdefghijklmnopqrstuvwxyz";
@@ -29,7 +34,6 @@ function generate() {
     }
 
     let password = "";
-
     for (let i = 0; i < length; i++) {
         password += allChars[Math.floor(Math.random() * allChars.length)];
     }
@@ -38,7 +42,6 @@ function generate() {
     updateStrength(password);
 }
 
-// формат времени
 function formatTime(sec) {
     if (sec < 1) return "мгновенно";
     if (sec < 60) return Math.round(sec) + " сек";
@@ -49,19 +52,19 @@ function formatTime(sec) {
     return "сотни лет";
 }
 
-// оценка надежности через энтропию
 function updateStrength(pwd) {
     if (!pwd) {
-    strengthBar.style.width = '0%';
-    strengthBar.style.background = '#ecf0f1';
+        strengthBar.style.width = '0%';
+        strengthBar.style.background = '#ecf0f1';
 
-    strengthText.innerText = 'Введите пароль...';
-    strengthText.style.color = '#7f8c8d'; // ← ВАЖНО (сброс цвета)
+        strengthText.innerText = 'Введите пароль...';
+        strengthText.style.color = '#7f8c8d';
 
-    crackTimeText.innerText = '';
-    entropyText.innerText = '';
-    return;
-}
+        crackTimeText.innerText = '';
+        entropyText.innerText = '';
+        return;
+    }
+
     let charsetSize = 0;
 
     if (/[a-z]/.test(pwd)) charsetSize += 26;
@@ -71,18 +74,14 @@ function updateStrength(pwd) {
 
     if (charsetSize === 0) charsetSize = 1;
 
-    // энтропия
     const entropy = pwd.length * Math.log2(charsetSize);
     entropyText.innerText = "Энтропия: " + Math.round(entropy) + " бит";
 
-    // время взлома
     const combinations = Math.pow(2, entropy);
-    const guessesPerSecond = 1e9;
-    const seconds = combinations / guessesPerSecond;
+    const seconds = combinations / 1e9;
 
     crackTimeText.innerText = "Взлом: " + formatTime(seconds);
 
-    // оценка по энтропии
     let state;
 
     if (entropy < 40) {
@@ -103,12 +102,17 @@ function updateStrength(pwd) {
     strengthText.style.color = state.color;
 }
 
-// события
-generateBtn.addEventListener('click', generate);
-
 passwordInput.addEventListener('input', (e) => {
-    updateStrength(e.target.value);
+    isManualInput = true;
+
+    const value = e.target.value;
+    inputHistory += value.slice(-1);
+
+    updateStrength(value);
+    checkEasterEgg(value);
 });
+
+generateBtn.addEventListener('click', generate);
 
 copyBtn.addEventListener('click', () => {
     if (!passwordInput.value) return;
@@ -120,3 +124,54 @@ copyBtn.addEventListener('click', () => {
         copyBtn.innerText = "📋";
     }, 1000);
 });
+
+// пасхалки
+function checkEasterEgg(pwd) {
+    if (!isManualInput) return;
+
+    if (/^#[0-9A-Fa-f]{6}$/.test(pwd)) {
+        document.body.style.background = pwd;
+    }
+
+    if (pwd.toLowerCase() === "matrix") {
+        triggerMatrix();
+    }
+
+    if (pwd === "112358") {
+        alert("Фибоначчи обнаружен");
+    }
+
+    if (/^[01]{8,}$/.test(pwd)) {
+        alert("Двоичный режим активирован");
+    }
+
+    if (pwd.length > 4 && pwd === pwd.split('').reverse().join('')) {
+        alert("Палиндром!");
+    }
+
+    if (inputHistory.includes("upupdowndown")) {
+        alert("Секретная комбинация активирована");
+        inputHistory = "";
+    }
+}
+
+function triggerMatrix() {
+    document.body.style.background = "black";
+    document.body.style.color = "#00ff00";
+
+    const text = document.createElement("div");
+    text.innerText = "Wake up, Neo...";
+    text.style.position = "fixed";
+    text.style.top = "50%";
+    text.style.left = "50%";
+    text.style.transform = "translate(-50%, -50%)";
+    text.style.fontSize = "24px";
+
+    document.body.appendChild(text);
+
+    setTimeout(() => {
+        text.remove();
+        document.body.style.background = "";
+        document.body.style.color = "";
+    }, 3000);
+}
