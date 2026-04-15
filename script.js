@@ -52,13 +52,16 @@ function formatTime(sec) {
 // оценка надежности через энтропию
 function updateStrength(pwd) {
     if (!pwd) {
-        strengthBar.style.width = '0%';
-        strengthText.innerText = 'Введите пароль...';
-        crackTimeText.innerText = '';
-        entropyText.innerText = '';
-        return;
-    }
+    strengthBar.style.width = '0%';
+    strengthBar.style.background = '#ecf0f1';
 
+    strengthText.innerText = 'Введите пароль...';
+    strengthText.style.color = '#7f8c8d'; // ← ВАЖНО (сброс цвета)
+
+    crackTimeText.innerText = '';
+    entropyText.innerText = '';
+    return;
+}
     let charsetSize = 0;
 
     if (/[a-z]/.test(pwd)) charsetSize += 26;
