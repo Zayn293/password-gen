@@ -14,6 +14,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: 0.3s;
 }
 
 .container {
@@ -92,6 +93,13 @@ input[type="text"] {
     margin-bottom: 5px;
 }
 
+.length-display {
+    display: inline-block;
+    width: 28px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
 /* адаптив */
 @media (max-width: 480px) {
     .main-card {
@@ -101,9 +109,4 @@ input[type="text"] {
     input[type="text"] {
         font-size: 16px;
     }
-}
-.length-display {
-    display: inline-block;
-    width: 28px;        /* фиксированная ширина */
-    text-align: center; /* центрирование числа */
 }
