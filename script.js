@@ -12,6 +12,9 @@ const mainCard = document.querySelector('.main-card');
 let isManualInput = false;
 let inputHistory = "";
 
+const secretSound = new Audio("sound.mp3");
+secretSound.volume = 0.6;
+
 lengthSlider.oninput = () => {
     lengthVal.innerText = lengthSlider.value;
 };
@@ -134,27 +137,36 @@ function checkEasterEgg(pwd) {
 
     const val = pwd.toLowerCase();
 
-    // MATRIX (улучшенная)
+    // MATRIX
     if (val === "matrix") {
         triggerMatrix();
     }
 
-    // "красный" — скример
-    if (val === "красный" || val === "red") {
+    // 67
+    if (pwd === "67") {
+        secretSound.currentTime = 0;
+        secretSound.play();
+
+        flashColor("#ffffff");
+        glitchEffect();
+    }
+
+    // "red" / "красный"
+    if (val === "red" || val === "красный") {
         flashColor("#ff0000");
     }
 
-    // "неон"
+    // неон
     if (val === "neon") {
         neonEffect();
     }
 
-    // "glitch"
+    // глитч
     if (val === "glitch") {
         glitchEffect();
     }
 
-    // секретная последовательность
+    // секретная комбинация
     if (inputHistory.includes("iddqd")) {
         godMode();
         inputHistory = "";
@@ -164,7 +176,6 @@ function checkEasterEgg(pwd) {
 
 // ===== ЭФФЕКТЫ =====
 
-// Matrix
 function triggerMatrix() {
     document.body.style.background = "black";
     document.body.style.color = "#00ff00";
@@ -188,7 +199,6 @@ function triggerMatrix() {
     }, 3000);
 }
 
-// Резкая вспышка (скример)
 function flashColor(color) {
     const original = document.body.style.background;
 
@@ -199,7 +209,6 @@ function flashColor(color) {
     }, 150);
 }
 
-// Неоновый эффект
 function neonEffect() {
     mainCard.style.boxShadow = "0 0 20px #0ff, 0 0 40px #0ff";
 
@@ -208,7 +217,6 @@ function neonEffect() {
     }, 2000);
 }
 
-// Глитч
 function glitchEffect() {
     mainCard.style.transform = "translate(5px, -5px)";
 
@@ -221,7 +229,6 @@ function glitchEffect() {
     }, 300);
 }
 
-// GOD MODE (секрет)
 function godMode() {
     mainCard.style.transform = "scale(1.1)";
     mainCard.style.boxShadow = "0 0 30px gold";
