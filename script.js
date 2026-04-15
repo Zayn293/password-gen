@@ -12,8 +12,10 @@ const mainCard = document.querySelector('.main-card');
 let isManualInput = false;
 let inputHistory = "";
 
+// 🔊 ЗВУК (предзагрузка)
 const secretSound = new Audio("sound.mp3");
-secretSound.volume = 0.6;
+secretSound.volume = 0.5;
+secretSound.loop = true; // чтобы играл пока введено 67
 
 lengthSlider.oninput = () => {
     lengthVal.innerText = lengthSlider.value;
@@ -22,6 +24,8 @@ lengthSlider.oninput = () => {
 function generate() {
     isManualInput = false;
     inputHistory = "";
+
+    stopSecretSound(); // остановка звука при генерации
 
     const length = parseInt(lengthSlider.value);
 
@@ -137,40 +141,49 @@ function checkEasterEgg(pwd) {
 
     const val = pwd.toLowerCase();
 
-    // MATRIX
+    // 🔊 67 — звук + эффект
+    if (pwd === "67") {
+        playSecretSound();
+        glitchEffect();
+    } else {
+        stopSecretSound(); // ← ВАЖНО: остановка если стерли 67
+    }
+
     if (val === "matrix") {
         triggerMatrix();
     }
 
-    // 67
-    if (pwd === "67") {
-        secretSound.currentTime = 0;
-        secretSound.play();
-
-        flashColor("#ffffff");
-        glitchEffect();
-    }
-
-    // "red" / "красный"
     if (val === "red" || val === "красный") {
         flashColor("#ff0000");
     }
 
-    // неон
     if (val === "neon") {
         neonEffect();
     }
 
-    // глитч
     if (val === "glitch") {
         glitchEffect();
     }
 
-    // секретная комбинация
     if (inputHistory.includes("iddqd")) {
         godMode();
         inputHistory = "";
     }
+}
+
+
+// ===== ЗВУК =====
+
+function playSecretSound() {
+    if (secretSound.paused) {
+        secretSound.currentTime = 0;
+        secretSound.play();
+    }
+}
+
+function stopSecretSound() {
+    secretSound.pause();
+    secretSound.currentTime = 0;
 }
 
 
@@ -201,7 +214,6 @@ function triggerMatrix() {
 
 function flashColor(color) {
     const original = document.body.style.background;
-
     document.body.style.background = color;
 
     setTimeout(() => {
